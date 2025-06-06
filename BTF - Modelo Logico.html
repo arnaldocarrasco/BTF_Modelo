@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>One-Page Application: Infografía & Modelo Lógico</title>
+    <style>
+        /* ===========================
+           Estilos Generales (Comunes)
+           =========================== */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1A1A1A;
+            color: #333;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        .hidden {
+            display: none;
+        }
+        /* ======================
+           Barra de Navegación
+           ====================== */
+        nav {
+            background-color: #FF9F2E; /* Gris oscuro del logo */
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        nav img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        nav h1 {
+            margin: 0;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+        }
+        nav .menu {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        nav .menu li {
+            margin-left: 20px;
+        }
+        nav .menu li button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        nav .menu li button:hover,
+        nav .menu li button.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        /* ===========================
+           Contenedor Principal (SPA)
+           =========================== */
+        .page-container {
+            max-width: 1000px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        /* ===================
+           Estilos del KickOff
+           =================== */
+        .kickoff .section {
+            margin-bottom: 40px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .kickoff h1, 
+        .kickoff h2, 
+        .kickoff h3, 
+        .kickoff h4 {
+            color: #FF4500; /* Naranja del logo */
+            margin-top: 0;
+        }
+        .kickoff h1 {
+            text-align: center;
+            border-bottom: 2px solid #FF4500;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        .kickoff .section h2 {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            color: #4A4A4A; /* Gris oscuro secundario */
+        }
+        .kickoff .subsection {
+            margin-top: 20px;
+        }
+        .kickoff table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        .kickoff th, .kickoff td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+        .kickoff th {
+            background-color: #FF4500; /* Encabezado de tabla en naranja */
+            color: #fff;
+        }
+        .kickoff .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .kickoff .grid-item {
+            background-color: #FFF3E0; /* Fondo claro naranja */
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #FFCC80; /* Borde claro naranja */
+        }
+        .kickoff .grid-item h4 {
+            margin-top: 0;
+            color: #FF4500; /* Títulos de grid en naranja */
+        }
+        .kickoff .highlight-box {
+            background-color: #FFF3E0; /* Fondo claro naranja */
+            border: 1px dashed #FF4500; /* Borde punteado naranja */
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        .kickoff .benefits-list li,
+        .kickoff .next-steps-list li {
+            background-color: #FFE0CC; /* Fondo claro naranja */
+            border-left: 5px solid #FF4500; /* Borde izquierdo naranja */
+            margin-bottom: 8px;
+            padding: 10px;
+        }
+        .kickoff ul {
+            padding-left: 0;
+            list-style: none;
+        }
+        .kickoff ul li {
+            margin-bottom: 6px;
+        }
+        /* ========================
+           Estilos del Modelo Lógico
+           ======================== */
+        .modelo .erp-container {
+            display: grid;
+            grid-template-areas:
+                "header header header"
+                "maestros operacion finanzas"
+                "maestros rrhh finanzas";
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-auto-rows: min-content;
+            gap: 20px;
+        }
+        .modelo .box {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 15px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .modelo .box h3 {
+            margin-top: 0;
+            color: #FF4500; /* Naranja del logo */
+        }
+        .modelo .box ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .modelo .box ul li {
+            background-color: #f9f9f9;
+            margin-bottom: 6px;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+        .modelo .box ul li strong {
+            color: #FF4500; /* Resaltar en naranja */
+        }
+        .modelo .header {
+            grid-area: header;
+            text-align: center;
+        }
+        .modelo .maestros {
+            grid-area: maestros;
+        }
+        .modelo .operacion {
+            grid-area: operacion;
+        }
+        .modelo .finanzas {
+            grid-area: finanzas;
+        }
+        .modelo .rrhh {
+            grid-area: rrhh;
+        }
+        /* Flechas decorativas */
+        .modelo .arrow {
+            position: relative;
+        }
+        .modelo .arrow::before {
+            content: "";
+            position: absolute;
+            width: 2px;
+            background-color: #FF4500; /* Línea de flecha en naranja */
+            top: -20px;
+            left: 50%;
+            height: 20px;
+        }
+        .modelo .arrow.izq::before {
+            left: 75%;
+        }
+        .modelo .arrow.der::before {
+            left: 25%;
+        }
+    </style>
+</head>
+<body>
+    <!-- =====================
+         Barra de Navegación
+         ===================== -->
+    <nav>
+        <h1>
+            <img src="logo-itiers.png" alt="Logo Itiers">
+            Banco Tierra del Fuego
+        </h1>
+        <ul class="menu">
+            <li><button id="btn-kickoff" class="active">Infografía</button></li>
+            <li><button id="btn-modelo">Modelo Lógico ERP</button></li>
+        </ul>
+    </nav>
+
+    <!-- ================================
+         Contenedor SPA (dos vistas)
+         ================================ -->
+    <div id="kickoff" class="page-container kickoff">
+        <!-- Contenido del KickOff -->
+        <h1>Infografía: Tableros Banco Tierra del Fuego</h1>
+
+        <!-- 1. Listado de tablas por tablero -->
+        <div class="section">
+            <h2>1. Listado de tablas por tablero</h2>
+            <p>A continuación se detallan las tablas de cada tablero, junto con su tipo de origen y la ruta/origen específica.</p>
+
+            <!-- 1.1 Tablero “Sucursales Integral” -->
+            <div class="subsection">
+                <h3>1.1 Tablero “Sucursales Integral”</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre de la Tabla</th>
+                            <th>Tipo de Origen</th>
+                            <th>Ruta / Origen</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Altas Cuentas</td>
+                            <td>System Packages</td>
+                            <td>\\ushpai01\reportespwrbi\Archivos\Altas Cuentas</td>
+                        </tr>
+                        <tr>
+                            <td>Listado_Clientes</td>
+                            <td>System Packages</td>
+                            <td>\\ushpai01\reportespwrbi\Archivos\Clientes</td>
+                        </tr>
+                        <tr>
+                            <td>PadronVisaMaster</td>
+                            <td>System Packages</td>
+                            <td>\\ushpai01\reportespwrbi\Archivos\Padrones TC\</td>
+                        </tr>
+                        <tr>
+                            <td>Prestamosdeldia</td>
+                            <td>System Packages</td>
+                            <td>\\ushpai01\reportespwrbi\Archivos\Prestamos\AltasPrestamos\Prestamosdeldia</td>
+                        </tr>
+                        <tr>
+                            <td>Proyección Pmos</td>
+                            <td>Excel File</td>
+                            <td>\\ushpai01\reportespwrbi\Archivos\Proyecciones Sucursales\Plan de Negocios_2024 1.xls</td>
+                        </tr>
+                        <tr>
+                            <td>Proyección TC</td>
+                            <td>Excel File</td>
+                            <td>\\ushpai01\reportespwrbi\Archivos\Proyecciones Sucursales\Plan de Negocios_2024 1.xls</td>
+                        </tr>
+                        <tr>
+                            <td>Rtcontrol</td>
+                            <td>System Packages</td>
+                            <td>\\ushpai01\reportespwrbi\Archivos\Prestamos\Rtcontrol-txt</td>
+                        </tr>
+                        <tr>
+                            <td>Venta Seguros</td>
+                            <td>Excel File</td>
+                            <td>\\ushpai01\reportespwrbi\Archivos\Seguros\Venta de Seguros.xlsx</td>
+                        </tr>
+                        <tr>
+                            <td>Transacciones por Caja</td>
+                            <td>System Packages</td>
+                            <td>\\ushpai01\reportespwrbi\Archivos\TransaccionesxCaja\Transaccionesxmes</td>
+                        </tr>
+                        <tr>
+                            <td>Calendario</td>
+                            <td>Generado Internamente</td>
+                            <td>N/A</td>
+                        </tr>
+                        <tr>
+                            <td>Desc_Sucursales</td>
+                            <td>Excel File</td>
+                            <td>\\ushpai01\reportespwrbi\Archivos\Parametros\Detalle Sucursales.xlsx</td>
+                        </tr>
+                        <tr>
+                            <td>Detalle Transacciones</td>
+                            <td>Excel File</td>
+                            <td>\\ushpai01\reportespwrbi\Archivos\Parametros\Detalle Transacciones.xlsx</td>
+                        </tr>
+                        <tr>
+                            <td>Referencias Cajeros</td>
+                            <td>Excel File</td>
+                            <td>\\ushpai01\reportespwrbi\Archivos\Parametros\Referencias Cajeros.xlsx</td>
+                        </tr>
+                        <tr>
+                            <td>Subproductos</td>
+                            <td>Excel File</td>
+                            <td>\\ushpai01\reportespwrbi\Archivos\Parametros\Detalle Subproductos.xlsx</td>
+                        </tr>
+                        <tr>
+                            <td>Desc_Productos</td>
+                            <td>Excel File</td>
+                            <td>\\ushpai01\reportespwrbi\Archivos\Parametros\Detalle Productos.xlsx</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 1.2 Tablero “Préstamos Liquidados Diario” -->
+            <div class="subsection">
+                <h3>1.2 Tablero “Préstamos Liquidados Diario”</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre de la Tabla</th>
+                            <th>Tipo de Origen</th>
+                            <th>Ruta / Origen</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Prestamosdeldia</td>
+                            <td>System Packages</td>
+                            <td>\\ushpai01\reportespwrbi\Archivos\Prestamos\AltasPrestamos\Prestamosdeldia</td>
+                        </tr>
+                        <tr>
+                            <td>Calendario</td>
+                            <td>Generado Internamente</td>
+                            <td>N/A</td>
+                        </tr>
+                        <tr>
+                            <td>Desc_Sucursales (o similar)</td>
+                            <td>Excel File</td>
+                            <td>\\ushpai01\reportespwrbi\Archivos\Parametros\Detalle Sucursales.xlsx</td>
+                        </tr>
+                        <tr>
+                            <td>Clientes (o Listado_Clientes)</td>
+                            <td>System Packages</td>
+                            <td>\\ushpai01\reportespwrbi\Archivos\Clientes</td>
+                        </tr>
+                        <tr>
+                            <td>Evento_Préstamo</td>
+                            <td>System Packages</td>
+                            <td>\\ushpai01\reportespwrbi\Archivos\Prestamos\RegistrosDiarios\*</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 1.3 Tablero “Débitos Cuentas Sueldo con calendario” -->
+            <div class="subsection">
+                <h3>1.3 Tablero “Débitos Cuentas Sueldo con calendario”</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre de la Tabla</th>
+                            <th>Tipo de Origen</th>
+                            <th>Ruta / Origen</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Débitos_Cuentas_Sueldo</td>
+                            <td>System Packages</td>
+                            <td>\\ushpai01\reportespwrbi\Archivos\Nominas\DebitosCuentasSueldo\*</td>
+                        </tr>
+                        <tr>
+                            <td>Calendario</td>
+                            <td>Generado Internamente</td>
+                            <td>N/A</td>
+                        </tr>
+                        <tr>
+                            <td>Empleados (o Listado_Empleados)</td>
+                            <td>Excel File</td>
+                            <td>\\ushpai01\reportespwrbi\Archivos\Parametros\Empleados.xlsx</td>
+                        </tr>
+                        <tr>
+                            <td>Sucursales (o Desc_Sucursales)</td>
+                            <td>Excel File</td>
+                            <td>\\ushpai01\reportespwrbi\Archivos\Parametros\Detalle Sucursales.xlsx</td>
+                        </tr>
+                        <tr>
+                            <td>Conceptos_Pago</td>
+                            <td>Excel File</td>
+                            <td>\\ushpai01\reportespwrbi\Archivos\Parametros\ConceptosPago.xlsx</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 2. Modelo Lógico de Datos Integrado -->
+        <div class="section">
+            <h2>2. Modelo Lógico de Datos Integrado</h2>
+            <p>Este modelo lógico busca consolidar dimensiones comunes y tablas de hechos de los tres tableros en un esquema unificado (Star Schema), optimizando rendimiento y facilidad de análisis en Power BI.</p>
+
+            <!-- 2.1 Dimensiones Compartidas -->
+            <div class="subsection">
+                <h3>2.1 Dimensiones Compartidas</h3>
+                <div class="highlight-box">
+                    <p>Las dimensiones contienen atributos descriptivos que se reutilizan en varios hechos para garantizar coherencia y gobernanza.</p>
+                </div>
+                <div class="grid-container">
+                    <!-- Dim_Calendario -->
+                    <div class="grid-item">
+                        <h4>Dim_Calendario</h4>
+                        <ul>
+                            <li><strong>Campos:</strong> Fecha (PK), Año, Mes, Día, Trimestre, Nombre_Mes, Número_Semana, Es_Fin_De_Mes, Es_Fin_De_Trimestre, etc.</li>
+                            <li><strong>Origen:</strong> Generado internamente en el Data Warehouse (tabla calculada o script ETL).</li>
+                            <li><strong>Uso:</strong> Relaciona con todas las tablas de hechos que contienen fecha.</li>
+                        </ul>
+                    </div>
+                    <!-- Dim_Sucursales -->
+                    <div class="grid-item">
+                        <h4>Dim_Sucursales</h4>
+                        <ul>
+                            <li><strong>Campos:</strong> Cod_Suc (PK), Nombre_Sucursal, Región, Gerente, Tipo_Sucursal, Dirección, Teléfono, etc.</li>
+                            <li><strong>Origen:</strong> Desc_Sucursales.xlsx y otras fuentes de información de sucursales.</li>
+                            <li><strong>Uso:</strong> Transacciones, préstamos, seguros, débitos, proyecciones, altas de cuentas.</li>
+                        </ul>
+                    </div>
+                    <!-- Dim_Clientes -->
+                    <div class="grid-item">
+                        <h4>Dim_Clientes</h4>
+                        <ul>
+                            <li><strong>Campos:</strong> ID_Cliente (PK), Nombre_Cliente, Tipo_Cliente, Segmento, Fecha_Alta, Estado_Civil, Nacionalidad, etc.</li>
+                            <li><strong>Origen:</strong> Listado_Clientes y otras fuentes de datos de clientes.</li>
+                            <li><strong>Uso:</strong> Hechos de préstamos, ventas de seguros, potencialmente débitos.</li>
+                        </ul>
+                    </div>
+                    <!-- Dim_Empleados -->
+                    <div class="grid-item">
+                        <h4>Dim_Empleados</h4>
+                        <ul>
+                            <li><strong>Campos:</strong> ID_Empleado (PK), Nombre_Empleado, Apellido_Empleado, Puesto, FK_Sucursal (PK a Dim_Sucursales), Supervisor, Tipo_Contrato, etc.</li>
+                            <li><strong>Origen:</strong> Referencias Cajeros.xlsx, Empleados.xlsx y otras fuentes de nómina.</li>
+                            <li><strong>Uso:</strong> Hechos de transacciones por caja y débitos de cuentas sueldo.</li>
+                        </ul>
+                    </div>
+                    <!-- Dim_Productos -->
+                    <div class="grid-item">
+                        <h4>Dim_Productos</h4>
+                        <ul>
+                            <li><strong>Campos:</strong> ID_Producto (PK), Descripción_Producto, Categoría_Producto, Subcategoría_Producto, Tipo_Producto, Estado_Producto, etc.</li>
+                            <li><strong>Origen:</strong> Desc_Productos.xlsx, Subproductos.xlsx.</li>
+                            <li><strong>Uso:</strong> Hechos de transacciones por caja y ventas de seguros (si las pólizas se modelan como productos).</li>
+                        </ul>
+                    </div>
+                    <!-- Dim_Conceptos_Pago -->
+                    <div class="grid-item">
+                        <h4>Dim_Conceptos_Pago</h4>
+                        <ul>
+                            <li><strong>Campos:</strong> ID_Concepto (PK), Nombre_Concepto, Tipo_Concepto (Devengo, Deducción, Aporte), Descripción_Detallada, etc.</li>
+                            <li><strong>Origen:</strong> ConceptosPago.xlsx.</li>
+                            <li><strong>Uso:</strong> Exclusiva para hechos de débitos de cuentas sueldo.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2.2 Tablas de Hechos -->
+            <div class="subsection">
+                <h3>2.2 Tablas de Hechos (Fact Tables)</h3>
+                <div class="highlight-box">
+                    <p>Las tablas de hechos almacenan métricas y claves foráneas a las dimensiones. Cada hecho corresponde a un proceso de negocio específico.</p>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tabla de Hecho</th>
+                            <th>Campos Principales</th>
+                            <th>Dimensiones Relacionadas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Fact_Prestamos_Diarios</td>
+                            <td>FK_Fecha, FK_Sucursal, FK_Cliente, Monto_Préstamo, Saldo_Pendiente, Plazo_Meses, Tasa_Interes, Comision_Otorgamiento, Estado_Prestamo, etc.</td>
+                            <td>Dim_Calendario, Dim_Sucursales, Dim_Clientes</td>
+                        </tr>
+                        <tr>
+                            <td>Fact_Transacciones_Caja</td>
+                            <td>FK_Fecha, FK_Sucursal, FK_Empleado, FK_Producto, Cantidad_Transacciones, Monto_Total_Transaccion, Tipo_Transaccion, Comision_Cajero, etc.</td>
+                            <td>Dim_Calendario, Dim_Sucursales, Dim_Empleados, Dim_Productos</td>
+                        </tr>
+                        <tr>
+                            <td>Fact_Venta_Seguros</td>
+                            <td>FK_Fecha, FK_Sucursal, FK_Cliente, Tipo_Poliza, Prima_Neta, Prima_Total, Comision_Venta, Fecha_Inicio_Cobertura, Fecha_Fin_Cobertura, etc.</td>
+                            <td>Dim_Calendario, Dim_Sucursales, Dim_Clientes</td>
+                        </tr>
+                        <tr>
+                            <td>Fact_Débitos_Cuentas_Sueldo</td>
+                            <td>FK_Fecha, FK_Empleado, FK_Sucursal, FK_Concepto, Monto_Debito, Tipo_Debito (Neto, Aportes, Deducciones), Cantidad_Debitos, etc.</td>
+                            <td>Dim_Calendario, Dim_Sucursales, Dim_Empleados, Dim_Conceptos_Pago</td>
+                        </tr>
+                        <tr>
+                            <td>Fact_Proyeccion_Pmos</td>
+                            <td>FK_Fecha, FK_Sucursal, Monto_Proyectado_Pmos, Categoría_Proyeccion, etc.</td>
+                            <td>Dim_Calendario, Dim_Sucursales</td>
+                        </tr>
+                        <tr>
+                            <td>Fact_Proyeccion_TC</td>
+                            <td>FK_Fecha, FK_Sucursal, Monto_Proyectado_TC, Tipo_Tarjeta, etc.</td>
+                            <td>Dim_Calendario, Dim_Sucursales</td>
+                        </tr>
+                        <tr>
+                            <td>Fact_Rtcontrol</td>
+                            <td>FK_Fecha, FK_Sucursal, ID_Control, Valor_Indicador_Rt, Tipo_Control, etc.</td>
+                            <td>Dim_Calendario, Dim_Sucursales</td>
+                        </tr>
+                        <tr>
+                            <td>Fact_Altas_Cuentas</td>
+                            <td>FK_Fecha, FK_Sucursal, Cantidad_Altas, Tipo_Cuenta_Abierta, Segmento_Cliente_Alta, etc.</td>
+                            <td>Dim_Calendario, Dim_Sucursales</td>
+                        </tr>
+                        <tr>
+                            <td>Fact_PadronVisa</td>
+                            <td>FK_Fecha, FK_Sucursal, Cantidad_Tarjetas_Activas, Monto_Consumo_TC, Tipo_Tarjeta, etc.</td>
+                            <td>Dim_Calendario, Dim_Sucursales</td>
+                        </tr>
+                        <tr>
+                            <td>Fact_Evento_Préstamo (Opcional)</td>
+                            <td>FK_Fecha, FK_Cliente, Tipo_Evento_Préstamo, Monto_Evento, Descripción_Evento, etc.</td>
+                            <td>Dim_Calendario, Dim_Clientes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 2.3 Diagrama Lógico (Esquema en Estrella) -->
+            <div class="subsection">
+                <h3>2.3 Diagrama Lógico (Esquema en Estrella)</h3>
+                <p>En el esquema en estrella, cada tabla de hechos se conecta a una o más dimensiones:</p>
+                <ul>
+                    <li><strong>Dim_Calendario</strong> → Fact_Prestamos_Diarios, Fact_Transacciones_Caja, Fact_Venta_Seguros, Fact_Débitos_Cuentas_Sueldo, Fact_Proyeccion_Pmos, Fact_Proyeccion_TC, Fact_Rtcontrol, Fact_Altas_Cuentas, Fact_PadronVisa, Fact_Evento_Préstamo.</li>
+                    <li><strong>Dim_Sucursales</strong> → Fact_Prestamos_Diarios, Fact_Transacciones_Caja, Fact_Venta_Seguros, Fact_Débitos_Cuentas_Sueldo, Fact_Proyeccion_Pmos, Fact_Proyeccion_TC, Fact_Rtcontrol, Fact_Altas_Cuentas, Fact_PadronVisa.</li>
+                    <li><strong>Dim_Clientes</strong> → Fact_Prestamos_Diarios, Fact_Venta_Seguros, Fact_Evento_Préstamo.</li>
+                    <li><strong>Dim_Empleados</strong> → Fact_Transacciones_Caja, Fact_Débitos_Cuentas_Sueldo.</li>
+                    <li><strong>Dim_Productos</strong> → Fact_Transacciones_Caja, Fact_Venta_Seguros (si aplica).</li>
+                    <li><strong>Dim_Conceptos_Pago</strong> → Fact_Débitos_Cuentas_Sueldo.</li>
+                </ul>
+            </div>
+
+            <!-- 2.4 Resumen de Relaciones "Estrella" -->
+            <div class="subsection">
+                <h3>2.4 Resumen de Relaciones "Estrella"</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tabla de Hecho</th>
+                            <th>Dimensiones Relacionadas</th>
+                            <th>Claves Foráneas (FK)</th>
+                            <th>Claves Primarias en Dimensiones (PK)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Fact_Prestamos_Diarios</td>
+                            <td>Dim_Calendario, Dim_Sucursales, Dim_Clientes</td>
+                            <td>FK_Fecha, FK_Sucursal, FK_Cliente</td>
+                            <td>Date, Cod_Suc, ID_Cliente</td>
+                        </tr>
+                        <tr>
+                            <td>Fact_Transacciones_Caja</td>
+                            <td>Dim_Calendario, Dim_Sucursales, Dim_Empleados, Dim_Productos</td>
+                            <td>FK_Fecha, FK_Sucursal, FK_Empleado, FK_Producto</td>
+                            <td>Date, Cod_Suc, ID_Empleado, ID_Producto</td>
+                        </tr>
+                        <tr>
+                            <td>Fact_Venta_Seguros</td>
+                            <td>Dim_Calendario, Dim_Sucursales, Dim_Clientes</td>
+                            <td>FK_Fecha, FK_Sucursal, FK_Cliente</td>
+                            <td>Date, Cod_Suc, ID_Cliente</td>
+                        </tr>
+                        <tr>
+                            <td>Fact_Débitos_Cuentas_Sueldo</td>
+                            <td>Dim_Calendario, Dim_Sucursales, Dim_Empleados, Dim_Conceptos_Pago</td>
+                            <td>FK_Fecha, FK_Sucursal, FK_Empleado, FK_Concepto</td>
+                            <td>Date, Cod_Suc, ID_Empleado, ID_Concepto</td>
+                        </tr>
+                        <tr>
+                            <td>Fact_Proyeccion_Pmos</td>
+                            <td>Dim_Calendario, Dim_Sucursales</td>
+                            <td>FK_Fecha, FK_Sucursal</td>
+                            <td>Date, Cod_Suc</td>
+                        </tr>
+                        <tr>
+                            <td>Fact_Proyeccion_TC</td>
+                            <td>Dim_Calendario, Dim_Sucursales</td>
+                            <td>FK_Fecha, FK_Sucursal</td>
+                            <td>Date, Cod_Suc</td>
+                        </tr>
+                        <tr>
+                            <td>Fact_Rtcontrol</td>
+                            <td>Dim_Calendario, Dim_Sucursales</td>
+                            <td>FK_Fecha, FK_Sucursal</td>
+                            <td>Date, Cod_Suc</td>
+                        </tr>
+                        <tr>
+                            <td>Fact_Altas_Cuentas</td>
+                            <td>Dim_Calendario, Dim_Sucursales</td>
+                            <td>FK_Fecha, FK_Sucursal</td>
+                            <td>Date, Cod_Suc</td>
+                        </tr>
+                        <tr>
+                            <td>Fact_PadronVisa</td>
+                            <td>Dim_Calendario, Dim_Sucursales</td>
+                            <td>FK_Fecha, FK_Sucursal</td>
+                            <td>Date, Cod_Suc</td>
+                        </tr>
+                        <tr>
+                            <td>Fact_Evento_Préstamo (Opcional)</td>
+                            <td>Dim_Calendario, Dim_Clientes</td>
+                            <td>FK_Fecha, FK_Cliente</td>
+                            <td>Date, ID_Cliente</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 3. Cómo integrar y unificar los tres tableros -->
+        <div class="section">
+            <h2>3. Cómo integrar y unificar los tres tableros</h2>
+            <p>La integración de los tres tableros se logra mediante la reutilización de dimensiones comunes y la consolidación de los hechos en un único modelo dimensional:</p>
+            <ul>
+                <li><strong>Tablero “Sucursales Integral”:</strong> Sus tablas de hechos (Fact_Transacciones_Caja, Fact_Altas_Cuentas, Fact_PadronVisa, Fact_Venta_Seguros, Fact_Proyeccion_Pmos, Fact_Proyeccion_TC, Fact_Rtcontrol) se integran en el esquema propuesto, reutilizando Dim_Calendario, Dim_Sucursales, Dim_Clientes, Dim_Empleados y Dim_Productos.</li>
+                <li><strong>Tablero “Préstamos Liquidados Diario”:</strong> Su hecho principal (Fact_Prestamos_Diarios) se conecta a las dimensiones Dim_Calendario, Dim_Sucursales y Dim_Clientes comunes. Si existe Fact_Evento_Préstamo, se añade como hecho adicional con Dim_Calendario y Dim_Clientes.</li>
+                <li><strong>Tablero “Débitos Cuentas Sueldo con calendario”:</strong> Su hecho principal (Fact_Débitos_Cuentas_Sueldo) se conecta a Dim_Calendario y Dim_Sucursales, y además a Dim_Empleados y Dim_Conceptos_Pago. Es esencial consolidar Referencias Cajeros y Empleados en Dim_Empleados para evitar redundancias.</li>
+            </ul>
+            <h4>Beneficios de esta integración:</h4>
+            <ul class="benefits-list">
+                <li><strong>Coherencia:</strong> Datos definidos una sola vez en dimensiones, aplicando filtros consistentes en todos los tableros.</li>
+                <li><strong>Rendimiento:</strong> Esquema en estrella optimizado para consultas analíticas, mejorando tiempos de respuesta en Power BI.</li>
+                <li><strong>Escalabilidad:</strong> Facilita la adición de nuevos hechos o dimensiones sin reestructurar el modelo.</li>
+                <li><strong>Gobernanza:</strong> Centraliza la definición de datos maestros (dimensiones), simplificando la gestión y asegurando calidad.</li>
+            </ul>
+        </div>
+
+        <!-- 4. Próximos pasos y recomendaciones -->
+        <div class="section">
+            <h2>4. Próximos pasos y recomendaciones</h2>
+            <ul class="next-steps-list">
+                <li>Consolidar nombres y convenciones estándar (usar prefijos “Dim_” para dimensiones y “Fact_” para hechos).</li>
+                <li>Verificar rutas y formatos exactos de todas las tablas en los PBIX restantes ("Préstamos Liquidados Diario" y "Débitos Cuentas Sueldo con calendario").</li>
+                <li>Definir llaves primarias (PK) en dimensiones y llaves foráneas (FK) en hechos, asegurando consistencia de tipo y formato (por ejemplo, Cod_Suc igual en todas las fuentes).</li>
+                <li>Detallar exhaustivamente atributos de cada dimensión (ej. Dim_Clientes: ID_Cliente, Nombre_Cliente, Segmento, Fecha_Alta, Tipo_Cliente, Estado_Civil).</li>
+                <li>Precisar la granularidad de cada tabla de hechos (ej. Fact_Transacciones_Caja a nivel transacción individual, Fact_Prestamos_Diarios a nivel día de préstamo liquidado).</li>
+                <li>Identificar y documentar reglas de negocio para cada transformación (ej. cálculo de comisiones, estandarización de códigos, manejo de nulos/duplicados).</li>
+                <li>Priorizar fuentes de datos según el impacto en el modelo lógico y en el negocio para la fase inicial de ETL.</li>
+                <li>Diseño detallado de procesos ETL (Extracción, Transformación y Carga) para cada tabla del Data Warehouse.</li>
+            </ul>
+            <p style="text-align:center; font-size:0.9em; color:#555;">
+                Itiers Data Sense 2025
+            </p>
+        </div>
+    </div>
+
+    <div id="modelo" class="page-container modelo hidden">
+        <!-- Contenido del Modelo Lógico ERP -->
+        <div class="erp-container">
+            <!-- Encabezado -->
+            <div class="header box">
+                <h2>Modelo Lógico de Datos (Esquema ERP)</h2>
+                <p>Visión consolidada en módulos ERP: Maestros, Operación, Finanzas y RRHH.</p>
+            </div>
+
+            <!-- Módulo Maestros (Dimensiones Compartidas) -->
+            <div class="maestros box">
+                <h3>Maestros (Dimensiones)</h3>
+                <ul>
+                    <li><strong>Dim_Calendario</strong><br/>
+                        Fecha (PK), Año, Mes, Día, Trimestre, Nombre_Mes, Número_Semana, Es_Fin_De_Mes, Es_Fin_De_Trimestre, …</li>
+                    <li><strong>Dim_Sucursales</strong><br/>
+                        Cod_Suc (PK), Nombre_Sucursal, Región, Gerente, Tipo_Sucursal, Dirección, Teléfono, …</li>
+                    <li><strong>Dim_Clientes</strong><br/>
+                        ID_Cliente (PK), Nombre_Cliente, Tipo_Cliente, Segmento, Fecha_Alta, Estado_Civil, Nacionalidad, …</li>
+                    <li><strong>Dim_Empleados</strong><br/>
+                        ID_Empleado (PK), Nombre_Empleado, Apellido_Empleado, Puesto, FK_Sucursal (a Dim_Sucursales), Supervisor, Tipo_Contrato, …</li>
+                    <li><strong>Dim_Productos</strong><br/>
+                        ID_Producto (PK), Descripción_Producto, Categoría_Producto, Subcategoría_Producto, Tipo_Producto, Estado_Producto, …</li>
+                    <li><strong>Dim_Conceptos_Pago</strong><br/>
+                        ID_Concepto (PK), Nombre_Concepto, Tipo_Concepto (Devengo, Deducción, Aporte), Descripción_Detallada, …</li>
+                </ul>
+            </div>
+
+            <!-- Módulo Operación (Fact_Transacciones_Caja) -->
+            <div class="operacion box arrow izq">
+                <h3>Operación</h3>
+                <ul>
+                    <li><strong>Fact_Transacciones_Caja</strong><br/>
+                        FK_Fecha → Dim_Calendario<br/>
+                        FK_Sucursal → Dim_Sucursales<br/>
+                        FK_Empleado → Dim_Empleados<br/>
+                        FK_Producto → Dim_Productos<br/>
+                        • Cantidad_Transacciones<br/>
+                        • Monto_Total_Transaccion<br/>
+                        • Tipo_Transaccion<br/>
+                        • Comision_Cajero<br/>
+                        …</li>
+                </ul>
+            </div>
+
+            <!-- Módulo Finanzas (diversos hechos financieros) -->
+            <div class="finanzas box arrow">
+                <h3>Finanzas</h3>
+                <ul>
+                    <li><strong>Fact_Prestamos_Diarios</strong><br/>
+                        FK_Fecha → Dim_Calendario<br/>
+                        FK_Sucursal → Dim_Sucursales<br/>
+                        FK_Cliente → Dim_Clientes<br/>
+                        • Monto_Préstamo<br/>
+                        • Saldo_Pendiente<br/>
+                        • Plazo_Meses<br/>
+                        • Tasa_Interes<br/>
+                        • Comision_Otorgamiento<br/>
+                        • Estado_Prestamo<br/>
+                        …</li>
+                    <li><strong>Fact_Venta_Seguros</strong><br/>
+                        FK_Fecha → Dim_Calendario<br/>
+                        FK_Sucursal → Dim_Sucursales<br/>
+                        FK_Cliente → Dim_Clientes<br/>
+                        • Tipo_Poliza<br/>
+                        • Prima_Neta<br/>
+                        • Prima_Total<br/>
+                        • Comision_Venta<br/>
+                        • Fecha_Inicio_Cobertura<br/>
+                        • Fecha_Fin_Cobertura<br/>
+                        …</li>
+                    <li><strong>Fact_Proyeccion_Pmos</strong><br/>
+                        FK_Fecha → Dim_Calendario<br/>
+                        FK_Sucursal → Dim_Sucursales<br/>
+                        • Monto_Proyectado_Pmos<br/>
+                        • Categoría_Proyeccion<br/>
+                        …</li>
+                    <li><strong>Fact_Proyeccion_TC</strong><br/>
+                        FK_Fecha → Dim_Calendario<br/>
+                        FK_Sucursal → Dim_Sucursales<br/>
+                        • Monto_Proyectado_TC<br/>
+                        • Tipo_Tarjeta<br/>
+                        …</li>
+                    <li><strong>Fact_Rtcontrol</strong><br/>
+                        FK_Fecha → Dim_Calendario<br/>
+                        FK_Sucursal → Dim_Sucursales<br/>
+                        • ID_Control<br/>
+                        • Valor_Indicador_Rt<br/>
+                        • Tipo_Control<br/>
+                        …</li>
+                    <li><strong>Fact_Altas_Cuentas</strong><br/>
+                        FK_Fecha → Dim_Calendario<br/>
+                        FK_Sucursal → Dim_Sucursales<br/>
+                        • Cantidad_Altas<br/>
+                        • Tipo_Cuenta_Abierta<br/>
+                        • Segmento_Cliente_Alta<br/>
+                        …</li>
+                    <li><strong>Fact_PadronVisa</strong><br/>
+                        FK_Fecha → Dim_Calendario<br/>
+                        FK_Sucursal → Dim_Sucursales<br/>
+                        • Cantidad_Tarjetas_Activas<br/>
+                        • Monto_Consumo_TC<br/>
+                        • Tipo_Tarjeta<br/>
+                        …</li>
+                </ul>
+            </div>
+
+            <!-- Módulo RRHH (Fact_Débitos_Cuentas_Sueldo) -->
+            <div class="rrhh box arrow der">
+                <h3>RRHH</h3>
+                <ul>
+                    <li><strong>Fact_Débitos_Cuentas_Sueldo</strong><br/>
+                        FK_Fecha → Dim_Calendario<br/>
+                        FK_Empleado → Dim_Empleados<br/>
+                        FK_Sucursal → Dim_Sucursales<br/>
+                        FK_Concepto → Dim_Conceptos_Pago<br/>
+                        • Monto_Debito<br/>
+                        • Tipo_Debito (Neto, Aportes, Deducciones)<br/>
+                        • Cantidad_Debitos<br/>
+                        …</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================
+         Script para navegación SPA
+         ========================== -->
+    <script>
+        const btnKickoff = document.getElementById('btn-kickoff');
+        const btnModelo = document.getElementById('btn-modelo');
+        const pageKickoff = document.getElementById('kickoff');
+        const pageModelo = document.getElementById('modelo');
+
+        btnKickoff.addEventListener('click', () => {
+            btnKickoff.classList.add('active');
+            btnModelo.classList.remove('active');
+            pageKickoff.classList.remove('hidden');
+            pageModelo.classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        btnModelo.addEventListener('click', () => {
+            btnModelo.classList.add('active');
+            btnKickoff.classList.remove('active');
+            pageModelo.classList.remove('hidden');
+            pageKickoff.classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
